@@ -3,7 +3,9 @@ import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { Metadata } from "next";
 
+import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
+import { dark } from "@clerk/themes";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -22,15 +24,21 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head />
-      <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable
-        )}
+      <ClerkProvider
+        appearance={{
+          baseTheme: dark,
+          variables: { colorPrimary: "#3371FF", fontSize: "16px" },
+        }}
       >
-        {children}
-      </body>
+        <body
+          className={cn(
+            "min-h-screen font-sans antialiased",
+            fontSans.variable
+          )}
+        >
+          {children}
+        </body>
+      </ClerkProvider>
     </html>
   );
 }
