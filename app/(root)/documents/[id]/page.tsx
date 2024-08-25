@@ -1,25 +1,25 @@
-import { Editor } from "@/components/editor/Editor";
-import Header from "@/components/Header";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import CollaborativeRoom from "@/components/CollaborativeRoom";
+import { DocumentProps } from "@/types";
+import { currentUser } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
+import { getAccessRoom } from "@/lib/acions/room.actions";
 
-const Page = () => {
+const Document = async ({ params: { id } }: DocumentProps) => {
+  const user = await currentUser();
+
+  if (!user) redirect("/sign-in");
+
+  const room = await getAccessRoom({
+    roomId: id,
+    userId: user.emailAddresses[0].emailAddress,
+  });
+
+
   return (
     <div>
-      <Header>
-        <div className="flex items-center justify-center w-fit gap-2">
-          <p className="document-title">Share</p>
-        </div>
-
-        <SignedOut>
-          <SignInButton />
-        </SignedOut>
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
-      </Header>
-      <Editor />
+      <CollaborativeRoom roomId={room.id} metadata={room.metadata} />
     </div>
   );
 };
 
-export default Page;
+export default Document;
