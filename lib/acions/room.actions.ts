@@ -61,3 +61,29 @@ export const getAccessRoom = async ({
     console.log(`Error when getRoom ${error}`);
   }
 };
+
+export const updateTitleRoom = async (roomId: string, title: string) => {
+  try {
+    const updateRoom = await liveblocks.updateRoom(roomId, {
+      metadata: {
+        title,
+      },
+    });
+
+    revalidatePath(`/documents/${roomId}`);
+
+    return parseStringify(updateRoom);
+  } catch (e) {
+    console.log(`Error updateTitleRoom : ${updateTitleRoom}`);
+  }
+};
+
+export const getAllDocuments = async (email: string) => {
+  try {
+    const allDocks = await liveblocks.getRooms({ userId: email });
+
+    return parseStringify(allDocks);
+  } catch (e) {
+    console.log(`Error getAllDocuments: ${getAllDocuments}`);
+  }
+};

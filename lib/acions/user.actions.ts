@@ -16,8 +16,8 @@ export const getUsers = async ({ userIds }: { userIds: string[] }) => {
       avatar: user.imageUrl,
     }));
 
-    const sortedUsers = users.map((user) =>
-      userIds.find((email) => user.email === email)
+    const sortedUsers = userIds.map((email) =>
+      users.find((user) => user.email === email)
     );
 
     return parseStringify(sortedUsers);

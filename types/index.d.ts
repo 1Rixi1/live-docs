@@ -16,11 +16,21 @@ type MetadataCollaborativeRoomType = {
 export type CollaborativeRoomProps = {
   roomId: string;
   metadata: MetadataCollaborativeRoomType;
+  usersData: UsersDataType;
+  currentUserData: UserType;
 };
 
 export type AddNewDocumentBtnProps = {
   userId: string;
   email: string;
+};
+
+export type UsersDataType = {
+  id: string;
+  name: string;
+  email: string;
+  avatar: string;
+  userType?: string;
 };
 
 export type UserType = "creator" | "editor" | "viewer";

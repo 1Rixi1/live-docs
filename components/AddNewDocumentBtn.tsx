@@ -23,7 +23,7 @@ const AddNewDocumentBtn = ({ userId, email }: AddNewDocumentBtnProps) => {
       className={"flex items-center ga-2"}
       onClick={addNewDocumentHandler}
     >
-      <Image src="/assetc/icons/add.svg" alt={"add"} width={24} height={24} />
+      <Image src="/assets/icons/add.svg" alt={"add"} width={24} height={24} />
       <p className={"hidden sm:block"}>Add new document</p>
     </Button>
   );

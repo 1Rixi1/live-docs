@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 const Header = ({ children, className }: HeaderProps) => {
   return (
     <div className={cn("header", className)}>
-      <Link className="md:flex-1" href="/">
+      <Link className="flex" href="/">
         <Image
           className="hidden md:block"
           src="/assets/icons/logo.svg"
