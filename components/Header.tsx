@@ -2,11 +2,12 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { HeaderProps } from "@/types";
+import { cn } from "@/lib/utils";
 
-const Header = ({ children }: HeaderProps) => {
+const Header = ({ children, className }: HeaderProps) => {
   return (
-    <div className="header">
-      <Link className="md:flex-1" href="/">
+    <div className={cn("header", className)}>
+      <Link className="flex" href="/">
         <Image
           className="hidden md:block"
           src="/assets/icons/logo.svg"
