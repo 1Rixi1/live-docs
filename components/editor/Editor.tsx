@@ -15,9 +15,12 @@ import {
   FloatingThreads,
   liveblocksConfig,
   LiveblocksPlugin,
+  useEditorStatus,
 } from "@liveblocks/react-lexical";
 import FloatingToolbar from "@/components/editor/plugins/FloatingToolbarPlugin";
 import { useThreads } from "@liveblocks/react";
+import Comments from "@/components/Comments";
+import Loader from "@/components/Loader";
 
 // Catch any errors that occur during Lexical updates and log them
 // or throw them as needed. If you don't throw them, Lexical will
@@ -34,6 +37,8 @@ export function Editor({
   roomId: string;
   currentUserData: string;
 }) {
+  const status = useEditorStatus();
+
   const { threads } = useThreads();
 
   const initialConfig = liveblocksConfig({
@@ -52,19 +57,26 @@ export function Editor({
       <div className="editor-container size-full">
         <ToolbarPlugin />
 
-        <div className="editor-inner h-[1100px]">
-          <RichTextPlugin
-            contentEditable={
-              <ContentEditable className="editor-input h-full" />
-            }
-            placeholder={<Placeholder />}
-            ErrorBoundary={LexicalErrorBoundary}
-          />
-          {currentUserData === "editor" && <FloatingToolbar />}
-          <HistoryPlugin />
-          <AutoFocusPlugin />
+        <div className="editor-wrapper flex flex-col items-center justify-start">
+          {status === "loading" ? (
+            <Loader />
+          ) : (
+            <div className="editor-inner min-h-[1100px] relative mb-5 w-full max-w-[800px] shadow-md lg:mb-10">
+              <RichTextPlugin
+                contentEditable={
+                  <ContentEditable className="editor-input h-full" />
+                }
+                placeholder={<Placeholder />}
+                ErrorBoundary={LexicalErrorBoundary}
+              />
+              {currentUserData === "editor" && <FloatingToolbar />}
+              <HistoryPlugin />
+              <AutoFocusPlugin />
+            </div>
+          )}
 
           <LiveblocksPlugin>
+            <Comments />
             <FloatingComposer className="w-[350px]" />
             <FloatingThreads threads={threads ?? []} />
           </LiveblocksPlugin>
