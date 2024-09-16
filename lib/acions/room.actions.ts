@@ -2,9 +2,9 @@
 
 import { nanoid } from "nanoid";
 import { liveblocks } from "@/lib/liveblocks";
-import { UsersAccessesType } from "@/types";
+import { AccessesType, UsersAccessesType, UserType } from "@/types";
 import { revalidatePath } from "next/cache";
-import { parseStringify } from "@/lib/utils";
+import { getAccessType, parseStringify } from "@/lib/utils";
 
 export const createDocument = async ({
   userId,
@@ -85,5 +85,50 @@ export const getAllDocuments = async (email: string) => {
     return parseStringify(allDocks);
   } catch (e) {
     console.log(`Error getAllDocuments: ${getAllDocuments}`);
+  }
+};
+
+export const updateCollaboratorDocument = async ({
+  roomId,
+  email,
+  userType,
+}: {
+  roomId: string;
+  email: string;
+  userType: UserType;
+}) => {
+  try {
+    const updateUser = await liveblocks.updateRoom(roomId, {
+      usersAccesses: {
+        [email]: getAccessType(userType) as AccessesType,
+      },
+    });
+
+    revalidatePath(`/documents/${roomId}`);
+    return parseStringify(updateUser);
+  } catch (error) {
+    console.log(`updateCollaboratorDocument ${error}`);
+  }
+};
+
+export const removeCollaboratorDocument = async ({
+  roomId,
+  email,
+}: {
+  roomId: string;
+  email: string;
+}) => {
+  try {
+    const updateUser = liveblocks.updateRoom(roomId, {
+      usersAccesses: {
+        [email]: null,
+      },
+    });
+
+    revalidatePath(`/documents/${roomId}`);
+
+    return parseStringify(updateUser);
+  } catch (error) {
+    console.log(`removeCollaborator ${error}`);
   }
 };

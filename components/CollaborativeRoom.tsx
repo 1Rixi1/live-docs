@@ -7,20 +7,21 @@ import { Editor } from "@/components/editor/Editor";
 import Loader from "@/components/Loader";
 import ActiveUsers from "@/components/ActiveUsers";
 import { CollaborativeRoomProps } from "@/types";
-import { useRef, useState, KeyboardEvent, useEffect } from "react";
+import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { updateTitleRoom } from "@/lib/acions/room.actions";
 import Image from "next/image";
+import ShareModal from "@/components/ShareModal";
 
 const CollaborativeRoom = ({
   roomId,
-  metadata,
-  usersData,
-  currentUserData,
+  roomMetadata,
+  collaborativeUsers,
+  currentUserType,
 }: CollaborativeRoomProps) => {
   const userType = "editor";
 
-  const [title, setTitle] = useState(metadata.title);
+  const [title, setTitle] = useState(roomMetadata.title);
   const [editable, setEditable] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -90,7 +91,7 @@ const CollaborativeRoom = ({
             )}
 
             {!editable && !loading && (
-              <p className="document-title">{metadata.title}</p>
+              <p className="document-title">{roomMetadata.title}</p>
             )}
 
             {userType === "editor" && !editable && (
@@ -109,6 +110,14 @@ const CollaborativeRoom = ({
 
           <div className="flex items-center">
             <ActiveUsers />
+
+            <ShareModal
+              roomId={roomId}
+              collaborativeUsers={collaborativeUsers}
+              currentUsersType={currentUserType}
+              creatorId={roomMetadata.creatorId}
+            />
+
             <SignedOut>
               <SignInButton />
             </SignedOut>
@@ -117,7 +126,7 @@ const CollaborativeRoom = ({
             </SignedIn>
           </div>
         </Header>
-        <Editor roomId={roomId} currentUserData={currentUserData} />
+        <Editor roomId={roomId} currentUserType={currentUserType} />
       </ClientSideSuspense>
     </RoomProvider>
   );
