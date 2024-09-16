@@ -15,14 +15,33 @@ type MetadataCollaborativeRoomType = {
 
 export type CollaborativeRoomProps = {
   roomId: string;
-  metadata: MetadataCollaborativeRoomType;
-  usersData: UsersDataType;
-  currentUserData: UserType;
+  roomMetadata: MetadataCollaborativeRoomType;
+  collaborativeUsers: UsersDataType[];
+  currentUserType: UserType;
 };
 
 export type AddNewDocumentBtnProps = {
   userId: string;
   email: string;
+};
+
+export type ShareModalProps = {
+  roomId: string;
+  collaborativeUsers: UsersDataType[];
+  currentUsersType: UserType;
+  creatorId: string;
+};
+
+export type UserSelectorTypeProps = {
+  userType: UserType;
+  setUserType: (value: UserType) => void;
+  onCLickHandler: (value: UserType) => void;
+};
+
+export type CollaboratorProps = {
+  collaborator: UsersDataType;
+  roomId: string;
+  creatorId: string;
 };
 
 export type UsersDataType = {

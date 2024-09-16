@@ -32,10 +32,10 @@ function Placeholder() {
 
 export function Editor({
   roomId,
-  currentUserData,
+  currentUserType,
 }: {
   roomId: string;
-  currentUserData: string;
+  currentUserType: string;
 }) {
   const status = useEditorStatus();
 
@@ -49,7 +49,7 @@ export function Editor({
       throw error;
     },
     theme: Theme,
-    editable: currentUserData === "editor",
+    editable: currentUserType === "editor",
   });
 
   return (
@@ -69,7 +69,7 @@ export function Editor({
                 placeholder={<Placeholder />}
                 ErrorBoundary={LexicalErrorBoundary}
               />
-              {currentUserData === "editor" && <FloatingToolbar />}
+              {currentUserType === "editor" && <FloatingToolbar />}
               <HistoryPlugin />
               <AutoFocusPlugin />
             </div>

@@ -1,5 +1,5 @@
 import CollaborativeRoom from "@/components/CollaborativeRoom";
-import { DocumentProps, UsersDataType } from "@/types";
+import { DocumentProps, UsersDataType, UserType } from "@/types";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { getAccessRoom } from "@/lib/acions/room.actions";
@@ -19,14 +19,16 @@ const Document = async ({ params: { id } }: DocumentProps) => {
 
   const users = await getUsers({ userIds });
 
-  const usersData = users.map((user: UsersDataType) => ({
-    ...user,
-    userType: room.usersAccesses[user.email].includes("room:write")
-      ? "editor"
-      : "viewer",
-  }));
+  const usersData = users
+    .filter((user: UserType) => user !== null)
+    .map((user: UsersDataType) => ({
+      ...user,
+      userType: room.usersAccesses[user.email].includes("room:write")
+        ? "editor"
+        : "viewer",
+    }));
 
-  const currentUserData = room.usersAccesses[
+  const currentUserType = room.usersAccesses[
     user.emailAddresses[0].emailAddress
   ].includes("room:write")
     ? "editor"
@@ -36,9 +38,9 @@ const Document = async ({ params: { id } }: DocumentProps) => {
     <div>
       <CollaborativeRoom
         roomId={room.id}
-        metadata={room.metadata}
-        currentUserData={currentUserData}
-        usersData={usersData}
+        roomMetadata={room.metadata}
+        collaborativeUsers={usersData}
+        currentUserType={currentUserType}
       />
     </div>
   );

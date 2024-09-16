@@ -2,6 +2,7 @@
 
 import { clerkClient } from "@clerk/nextjs/server";
 import { parseStringify } from "@/lib/utils";
+import { liveblocks } from "@/lib/liveblocks";
 
 export const getUsers = async ({ userIds }: { userIds: string[] }) => {
   try {
@@ -23,5 +24,33 @@ export const getUsers = async ({ userIds }: { userIds: string[] }) => {
     return parseStringify(sortedUsers);
   } catch (error) {
     console.log(`Error when getUsers: ${error}`);
+  }
+};
+
+export const getUsersDocument = async ({
+  roomId,
+  currentUser,
+  text,
+}: {
+  roomId: string;
+  currentUser: string;
+  text: string;
+}) => {
+  try {
+    const room = await liveblocks.getRoom(roomId);
+
+    const users = Object.keys(room.id).filter((email) => email !== currentUser);
+
+    if (text.length) {
+      const lowerText = text.toLowerCase();
+
+      const findUser = users.filter((email) => email.includes(lowerText));
+
+      return parseStringify(findUser);
+    }
+
+    return parseStringify(users);
+  } catch (error) {
+    console.log(`Error getUsersRoom ${error}`);
   }
 };
