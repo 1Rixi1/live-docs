@@ -1,10 +1,10 @@
 "use server";
-
 import { nanoid } from "nanoid";
 import { liveblocks } from "@/lib/liveblocks";
 import { AccessesType, UsersAccessesType, UserType } from "@/types";
 import { revalidatePath } from "next/cache";
 import { getAccessType, parseStringify } from "@/lib/utils";
+import { redirect } from "next/navigation";
 
 export const createDocument = async ({
   userId,
@@ -85,6 +85,17 @@ export const getAllDocuments = async (email: string) => {
     return parseStringify(allDocks);
   } catch (e) {
     console.log(`Error getAllDocuments: ${getAllDocuments}`);
+  }
+};
+
+export const deleteDocument = async (roomId: string) => {
+  try {
+    await liveblocks.deleteRoom(roomId);
+
+    revalidatePath("/");
+    redirect("/");
+  } catch (error) {
+    console.log(`deleteDocument ${error}`);
   }
 };
 
