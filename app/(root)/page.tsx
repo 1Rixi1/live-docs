@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
 import { SignedIn, UserButton } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
@@ -8,6 +7,7 @@ import AddNewDocumentBtn from "@/components/AddNewDocumentBtn";
 import { getAllDocuments } from "@/lib/acions/room.actions";
 import Link from "next/link";
 import { dateConverter } from "@/lib/utils";
+import DeleteModal from "@/components/DeleteModal";
 
 const Home = async () => {
   const user = await currentUser();
@@ -54,6 +54,7 @@ const Home = async () => {
                     </p>
                   </div>
                 </Link>
+                <DeleteModal roomId={id} />
               </li>
             ))}
           </ul>

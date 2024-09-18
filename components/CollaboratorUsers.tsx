@@ -1,7 +1,7 @@
 import { useOthers } from "@liveblocks/react";
 import Image from "next/image";
 
-const ActiveUsers = () => {
+const CollaboratorUsers = () => {
   const otherUsers = useOthers();
 
   const usersInfo = otherUsers.map((user) => user.info);
@@ -24,4 +24,4 @@ const ActiveUsers = () => {
   );
 };
 
-export default ActiveUsers;
+export default CollaboratorUsers;

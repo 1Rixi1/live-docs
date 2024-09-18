@@ -15,6 +15,8 @@ const Document = async ({ params: { id } }: DocumentProps) => {
     userId: user.emailAddresses[0].emailAddress,
   });
 
+  if (!room) redirect("/");
+
   const userIds = Object.keys(room.usersAccesses);
 
   const users = await getUsers({ userIds });

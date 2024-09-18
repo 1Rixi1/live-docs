@@ -5,7 +5,7 @@ import Header from "@/components/Header";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { Editor } from "@/components/editor/Editor";
 import Loader from "@/components/Loader";
-import ActiveUsers from "@/components/ActiveUsers";
+import CollaboratorUsers from "@/components/CollaboratorUsers";
 import { CollaborativeRoomProps } from "@/types";
 import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
@@ -19,8 +19,6 @@ const CollaborativeRoom = ({
   collaborativeUsers,
   currentUserType,
 }: CollaborativeRoomProps) => {
-  const userType = "editor";
-
   const [title, setTitle] = useState(roomMetadata.title);
   const [editable, setEditable] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -94,7 +92,7 @@ const CollaborativeRoom = ({
               <p className="document-title">{roomMetadata.title}</p>
             )}
 
-            {userType === "editor" && !editable && (
+            {currentUserType === "editor" && !editable && (
               <Image
                 src="/assets/icons/edit.svg"
                 alt="edit"
@@ -106,10 +104,13 @@ const CollaborativeRoom = ({
             )}
 
             {loading && <p>... saving</p>}
+            {currentUserType !== "editor" && !editable && (
+              <p className="view-only-tag">Только просмотр</p>
+            )}
           </div>
 
-          <div className="flex items-center">
-            <ActiveUsers />
+          <div className="flex items-center gap-3">
+            <CollaboratorUsers />
 
             <ShareModal
               roomId={roomId}
