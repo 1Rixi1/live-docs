@@ -23,6 +23,9 @@ importers:
       '@liveblocks/client':
         specifier: ^2.8.0
         version: 2.8.0
+      '@liveblocks/core':
+        specifier: ^2.8.0
+        version: 2.8.0
       '@liveblocks/node':
         specifier: ^2.5.2
         version: 2.5.2
